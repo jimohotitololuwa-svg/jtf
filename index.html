@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>I WILL BE THERE — Teens Meet 3.0 | Higher Ground</title>
+<meta name="description" content="Generate your personalized 'I Will Be There' flyer for Teens Meet 3.0 — Higher Ground." />
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ambient background glows -->
+  <div class="bg-glow bg-glow--left" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--right" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand__eyebrow">TEENS MEET 3.0</span>
+      <span class="brand__title">HIGHER GROUND</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO SECTION ============ -->
+    <section class="hero" id="hero">
+      <div class="hero__inner">
+        <p class="hero__kicker"><i class="fa-solid fa-mountain-sun" aria-hidden="true"></i> Event Flyer Studio</p>
+        <h1 class="hero__title">Generate Your<br /><span class="hero__title-accent">“I Will Be There”</span> Flyer</h1>
+        <p class="hero__subtitle">Upload your picture, customize it, and generate your personalized event flyer in seconds.</p>
+
+        <div class="upload-card glass" id="uploadCard">
+          <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" hidden />
+
+          <div class="upload-card__dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload your photo">
+            <div class="upload-card__icon">
+              <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+            </div>
+            <p class="upload-card__title">Drag &amp; drop your photo here</p>
+            <p class="upload-card__or">or</p>
+            <button type="button" class="btn btn--primary" id="browseBtn">
+              <i class="fa-solid fa-image" aria-hidden="true"></i>
+              Choose a Photo
+            </button>
+            <p class="upload-card__hint">PNG, JPG, JPEG or WEBP &middot; Max size 10MB</p>
+          </div>
+
+          <p class="upload-card__error" id="uploadError" hidden></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EDITOR SECTION ============ -->
+    <section class="editor" id="editorSection" hidden>
+      <div class="editor__inner">
+
+        <div class="editor__panel glass">
+          <div class="editor__panel-header">
+            <h2><i class="fa-solid fa-crop-simple" aria-hidden="true"></i> Adjust Your Photo</h2>
+            <p>Drag to reposition, zoom to fit, rotate if needed.</p>
+          </div>
+
+          <div class="editor__stage-wrap">
+            <div class="editor__stage" id="editorStage">
+              <canvas id="editorCanvas"></canvas>
+              <div class="editor__frame-mask" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="editor__controls">
+            <div class="control-row">
+              <label for="zoomRange"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> Zoom</label>
+              <input type="range" id="zoomRange" min="100" max="300" value="100" step="1" />
+            </div>
+            <div class="control-row">
+              <label for="rotateRange"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Rotate</label>
+              <input type="range" id="rotateRange" min="-45" max="45" value="0" step="1" />
+            </div>
+
+            <div class="control-buttons">
+              <button type="button" class="btn btn--ghost" id="manualCropBtn">
+                <i class="fa-solid fa-hand" aria-hidden="true"></i> Manual Crop
+              </button>
+              <button type="button" class="btn btn--ghost" id="autoCropBtn">
+                <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Auto Crop
+              </button>
+              <button type="button" class="btn btn--ghost" id="resetBtn">
+                <i class="fa-solid fa-arrow-rotate-left" aria-hidden="true"></i> Reset
+              </button>
+              <button type="button" class="btn btn--ghost" id="changePhotoBtn">
+                <i class="fa-solid fa-image" aria-hidden="true"></i> Change Photo
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor__panel glass editor__preview-panel">
+          <div class="editor__panel-header">
+            <h2><i class="fa-solid fa-eye" aria-hidden="true"></i> Live Preview</h2>
+            <p>This is exactly how your flyer will look.</p>
+          </div>
+
+          <div class="preview__frame">
+            <canvas id="previewCanvas"></canvas>
+          </div>
+
+          <button type="button" class="btn btn--generate" id="generateBtn">
+            <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+            Generate Flyer
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ RESULT SECTION ============ -->
+    <section class="result" id="resultSection" hidden>
+      <div class="result__inner glass">
+        <div class="editor__panel-header result__header">
+          <h2><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Your Flyer Is Ready</h2>
+          <p>Share it everywhere and let them know — you will be there.</p>
+        </div>
+
+        <div class="result__flyer-wrap">
+          <canvas id="finalCanvas"></canvas>
+        </div>
+
+        <div class="result__actions">
+          <button type="button" class="btn btn--primary" id="downloadBtn">
+            <i class="fa-solid fa-download" aria-hidden="true"></i> Download PNG
+          </button>
+          <button type="button" class="btn btn--ghost" id="shareBtn">
+            <i class="fa-solid fa-share-nodes" aria-hidden="true"></i> Share
+          </button>
+          <button type="button" class="btn btn--ghost" id="generateAnotherBtn">
+            <i class="fa-solid fa-rotate" aria-hidden="true"></i> Generate Another
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>JAWOM Teens Global &middot; Teens Meet 3.0 &mdash; Higher Ground</p>
+  </footer>
+
+  <!-- ============ LOADING OVERLAY ============ -->
+  <div class="loader-overlay" id="loaderOverlay" hidden>
+    <div class="loader">
+      <div class="loader__rings">
+        <div class="loader__ring loader__ring--1"></div>
+        <div class="loader__ring loader__ring--2"></div>
+        <div class="loader__ring loader__ring--3"></div>
+        <div class="loader__glow"></div>
+        <div class="loader__particles" id="loaderParticles"></div>
+        <span class="loader__logo">JTF</span>
+      </div>
+      <p class="loader__message" id="loaderMessage">Preparing Image...</p>
+      <div class="loader__progress">
+        <div class="loader__progress-bar" id="loaderProgressBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SHARE MODAL ============ -->
+  <div class="modal-overlay" id="shareModal" hidden>
+    <div class="modal glass">
+      <button type="button" class="modal__close" id="shareModalClose" aria-label="Close">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <h3><i class="fa-solid fa-share-nodes" aria-hidden="true"></i> Share Your Flyer</h3>
+      <div class="share-grid">
+        <button type="button" class="share-option" data-share="whatsapp">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i><span>WhatsApp</span>
+        </button>
+        <button type="button" class="share-option" data-share="facebook">
+          <i class="fa-brands fa-facebook" aria-hidden="true"></i><span>Facebook</span>
+        </button>
+        <button type="button" class="share-option" data-share="instagram">
+          <i class="fa-brands fa-instagram" aria-hidden="true"></i><span>Instagram</span>
+        </button>
+        <button type="button" class="share-option" data-share="x">
+          <i class="fa-brands fa-x-twitter" aria-hidden="true"></i><span>X</span>
+        </button>
+        <button type="button" class="share-option" data-share="telegram">
+          <i class="fa-brands fa-telegram" aria-hidden="true"></i><span>Telegram</span>
+        </button>
+        <button type="button" class="share-option" data-share="email">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i><span>Email</span>
+        </button>
+        <button type="button" class="share-option" data-share="copy-image">
+          <i class="fa-solid fa-copy" aria-hidden="true"></i><span>Copy Image</span>
+        </button>
+        <button type="button" class="share-option" data-share="copy-link">
+          <i class="fa-solid fa-link" aria-hidden="true"></i><span>Copy Link</span>
+        </button>
+      </div>
+      <p class="share-toast" id="shareToast" hidden></p>
+    </div>
+  </div>
+
+  <!-- ============ MEMORY VERSE POPUP ============ -->
+  <div class="verse-popup glass" id="versePopup" hidden>
+    <div class="verse-popup__header" id="versePopupHeader">
+      <span class="verse-popup__title"><i class="fa-solid fa-book-bible" aria-hidden="true"></i> Memory Verse</span>
+      <div class="verse-popup__header-actions">
+        <button type="button" class="verse-popup__icon-btn" id="verseMinimizeBtn" aria-label="Minimize">
+          <i class="fa-solid fa-minus" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="verse-popup__icon-btn" id="verseCloseBtn" aria-label="Close">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="verse-popup__body" id="versePopupBody">
+      <p class="verse-popup__reference" id="verseReference">Habakkuk 3:19</p>
+      <p class="verse-popup__text" id="verseText">"The Sovereign Lord is my strength; he makes my feet like the feet of a deer; he enables me to tread on the heights."</p>
+      <div class="verse-popup__nav">
+        <button type="button" class="verse-popup__nav-btn" id="versePrevBtn" aria-label="Previous verse">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="verse-popup__nav-btn" id="verseNextBtn" aria-label="Next verse">
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="verse-bubble" id="verseBubble" hidden aria-label="Open memory verse">
+    <i class="fa-solid fa-book-bible" aria-hidden="true"></i>
+  </button>
+
+  <script src="template-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
