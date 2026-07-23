@@ -12,9 +12,9 @@
      placeholder square punched out to transparency. Coordinates are
      expressed in the template's native 1254x1254 pixel space.
   ----------------------------------------------------------------- */
-  const TEMPLATE_SIZE = 2080;
-  const FRAME = { x: 685, y: 802, w: 710, h: 716 };
-  const FRAME_OVERSCAN = 12; // px in template space, prevents seam gaps
+  const TEMPLATE_SIZE = 1254;
+  const FRAME = { x: 413, y: 484, w: 428, h: 431 };
+  const FRAME_OVERSCAN = 10; // px in template space, prevents seam gaps
   const OUTPUT_SIZE = 2048;
   const MAX_FILE_MB = 10;
   const ACCEPTED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
